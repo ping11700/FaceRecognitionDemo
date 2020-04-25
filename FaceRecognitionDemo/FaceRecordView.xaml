@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="FaceRecognitionDemo.FaceRecordView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FaceRecognitionDemo"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CustomTextBox" TargetType="TextBox">
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <GroupBox Header="人脸库">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <DataGrid x:Name="_dataGrid" ItemsSource="{Binding PIVMList}" BorderThickness="1" AutoGenerateColumns="False" GridLinesVisibility="Horizontal" CanUserAddRows="False" IsReadOnly="True" SelectedItem="{Binding SelectDataGridItem}"  >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding PersonName, Mode=TwoWay}" Header="姓名"/>
+                        <DataGridTextColumn Binding="{Binding PersonNumber, Mode=TwoWay}" Header="学号"/>
+                        <DataGridTextColumn Binding="{Binding PersonGender, Mode=TwoWay}" Header="性别"/>
+                        <DataGridTextColumn Binding="{Binding PersonClass, Mode=TwoWay}" Header="班级"/>
+                        <DataGridTemplateColumn Header="图像">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding NaturalSourceImage}"
+                                       Height="50" Width="50"/>
+                                    <!--Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=Source.PixelWidth  }"
+                                       Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid }, Path=Source.PixelWidth  }"-->
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Binding="{Binding FaceCharacteristics}" Header="特征数据"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="_editBtn" Content="编辑" Width="50" IsEnabled="{Binding IsEditBtnEnable}" Click="_editBtn_Click"/>
+                    <Button x:Name="_deletBtn" Content="删除" Width="50" IsEnabled="{Binding IsDeletBtnEnable}" Click="_deletBtn_Click"/>
+                    <Button x:Name="_clearBtn" Content="清空" Width="50" IsEnabled="{Binding IsClearBtnEnable}" Click="_clearBtn_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </GroupBox>
+</UserControl>

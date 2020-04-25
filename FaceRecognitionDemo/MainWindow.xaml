@@ -1,0 +1,107 @@
+﻿<Window x:Class="FaceRecognitionDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FaceRecognitionDemo"
+        xmlns:aForge="clr-namespace:AForge.Controls;assembly=AForge.Controls"
+        mc:Ignorable="d"
+        Height="600" Width="1000" Title="{Binding MainTitle}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding UCTitle}" FontWeight="Black" />
+                <!--<Label Content="Trace:" Margin="500,0,0,0"/>
+                <Label Content="{Binding TraceMessage}"/>-->
+            </StackPanel>
+            <Line Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=ActualWidth }"  VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel>
+                        <Button x:Name="_mainViewFRBtn" Content="人脸录入" Background="Transparent" Click="_mainViewFRBtn_Click"/>
+                        <Button x:Name="_mainViewFIBtn" Content="人脸识别" Background="Transparent" Click="_mainViewFIBtn_Click"/>
+                        <!--<Button x:Name="_mainViewFFBtn" Content="人脸查询" Background="Transparent" Click="_mainViewFFBtn_Click"/>
+                        <Button x:Name="_mainViewMSBtn" Content="模式切换" Background="Transparent" Click="_mainViewMSBtn_Click"/>-->
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <StackPanel>
+                        <!--<Label Content="相机列表:"/>
+                        -->
+                        <!--相机列表-->
+                        <!--
+                        <ComboBox ItemsSource="{Binding CameraList}" SelectedItem="{Binding SelectedCamera}" Background="Transparent" SelectionChanged ="_camera_comboBox_Selected"/>
+                        <Label Content="分辨率列表:"/>
+                        -->
+                        <!--分辨率-->
+                        <!--
+                        <ComboBox ItemsSource="{Binding ResolutionList}" SelectedItem="{Binding SelectedResolution}" Background="Transparent" SelectionChanged="_resolutionList_comboBox_Selected"/>-->
+                        <TextBox x:Name="_logTextBox" Height="255" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <!--图像视频-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <!--使用Camera_NET中的CameraControl控件 播放-->
+                    <!--<WindowsFormsHost>
+                        <camera_NET:CameraControl x:Name="_cameraControl"/>
+                    </WindowsFormsHost>-->
+
+                    <WindowsFormsHost x:Name="_rgbWinFormsHost">
+                        <aForge:VideoSourcePlayer x:Name="_rgbVideoSource"/>
+                    </WindowsFormsHost>
+                    <WindowsFormsHost x:Name="_irWinFormsHost" Height="200" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <aForge:VideoSourcePlayer x:Name="_irVideoSource"/>
+                    </WindowsFormsHost>
+                </Grid>
+                <Grid Grid.Row="1"  VerticalAlignment="Top" >
+                    <StackPanel Orientation="Horizontal" >
+                        <!--启动摄像头-->
+                        <Button x:Name="_mainView_StartCamera_Btn" Content="启动摄像头" Background="Transparent" IsEnabled="{Binding IsCameraEnable}" Click="_mainView_StartCamera_Btn_Click"/>
+                        <!--拍照录入-->
+                        <Button x:Name="_mainViewPGBtn" Content="拍照录入" Background="Transparent" IsEnabled="{Binding IsPGBtnEnable}" Visibility="{Binding IsFaceRecordMode}" Click="_mainViewPGBtn_Click"/>
+                        <!--选照录入-->
+                        <Button x:Name="_mainViewSIBtn" Content="选照录入" Background="Transparent" IsEnabled="{Binding IsSIBtnEnable}" Visibility="{Binding IsFaceRecordMode}" Click="_mainViewSIBtn_Click"/>
+                        <!--拍照识别-->
+                        <Button x:Name="_mainViewPGIBtn" Content="拍照识别" Background="Transparent" IsEnabled="{Binding IsPGIBtnEnable}" Visibility="Collapsed" Click="_mainViewPGIBtn_Click"/>
+                        <!--选照识别-->
+                        <Button x:Name="_mainViewSIIBtn" Content="选照识别" Background="Transparent" IsEnabled="{Binding IsSIIBtnEnable}" Visibility="Collapsed" Click="_mainViewSIIBtn_Click"/>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                        <Label Content="阈值:" />
+                        <TextBox x:Name="_txtThreshold" Text="{Binding ThresholdValue, Mode=TwoWay}" IsReadOnly="True" Width="Auto" KeyDown="_txtThreshold_KeyDown" KeyUp="_txtThreshold_KeyUp"  />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="2" x:Name="_personInfoMainViewGrid" Visibility="{Binding IsShowPersonInfoUC}" VerticalAlignment="Top">
+                    <ContentControl Content="{Binding PersonInfoUC}"/>
+                </Grid>
+            </Grid>
+            <!--人员信息-->
+            <Grid Grid.Column="2">
+                <ContentControl Content="{Binding UC}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
